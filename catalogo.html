@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo | MAXLIMPO</title>
+<meta name="description" content="Catálogo de produtos MAXLIMPO: água sanitária, amaciante, detergente, sabão líquido, limpador perfumado, multiuso e shampoo automotivo.">
+<link rel="icon" href="logo-recortado.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --verde:#7ab33a; --verde-esc:#5a9628; --verde-claro:#a4cf5e;
+    --azul:#1a78d0; --azul-esc:#1c5fb5; --azul-claro:#8fd3f0;
+    --txt:#23405c; --suave:#5f7388; --borda:#dbe8f3;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{
+    font-family:"Open Sans","Segoe UI",system-ui,sans-serif;color:var(--txt);min-height:100vh;
+    background:
+      radial-gradient(900px 380px at 100% -10%, rgba(143,211,240,.45), transparent 70%),
+      radial-gradient(800px 360px at -10% 0%, rgba(164,207,94,.35), transparent 70%),#fff;
+    padding-bottom:32px;
+  }
+  .topo{max-width:960px;margin:0 auto;padding:20px 16px 8px;text-align:center;position:relative}
+  .topo img{width:min(210px,56%);height:auto;display:block;margin:0 auto}
+  .voltar{position:absolute;left:16px;top:20px;text-decoration:none;color:var(--azul-esc);font-weight:800;font-style:italic;font-size:.95rem}
+  .voltar:hover{text-decoration:underline}
+  h1{text-wrap:balance;font-style:italic;font-weight:800;font-size:1.5rem;color:var(--azul-esc);margin-top:-4px}
+  .sub{color:var(--suave);font-size:.92rem;margin-top:2px}
+
+  .filtros{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--borda);margin-top:14px}
+  .filtros div{max-width:960px;margin:0 auto;display:flex;gap:8px;overflow-x:auto;padding:10px 16px;scrollbar-width:none}
+  .filtros div::-webkit-scrollbar{display:none}
+  .chip{flex:none;border:2px solid var(--azul-claro);background:#fff;color:var(--azul-esc);font:800 italic .88rem "Open Sans",sans-serif;padding:7px 14px;border-radius:999px;cursor:pointer;transition:.15s}
+  .chip:hover{border-color:var(--azul)}
+  .chip.ativo{background:linear-gradient(135deg,var(--azul),var(--azul-esc));border-color:transparent;color:#fff}
+
+  main{max-width:960px;margin:0 auto;padding:0 16px}
+  section{margin-top:26px;scroll-margin-top:70px}
+  section h2{font-style:italic;font-weight:800;font-size:1.25rem;color:var(--verde-esc);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  section h2::after{content:"";flex:1;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--verde-claro),var(--azul-claro),transparent)}
+  .grade{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(min-width:640px){.grade{grid-template-columns:repeat(3,1fr);gap:18px}}
+  @media(min-width:900px){.grade{grid-template-columns:repeat(4,1fr)}}
+
+  .card{min-width:0;background:#fff;border:1px solid var(--borda);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 3px 10px rgba(28,95,181,.1);transition:transform .15s,box-shadow .15s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(28,95,181,.2)}
+  .foto{all:unset;cursor:zoom-in;display:flex;align-items:center;justify-content:center;height:230px;background:linear-gradient(180deg,#f4f9fd,#e9f2fa);padding:8px}
+  .foto:focus-visible{outline:3px solid var(--azul)}
+  .foto img{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;box-shadow:0 3px 8px rgba(0,0,0,.18)}
+  .info{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .nome{overflow-wrap:anywhere;font-weight:800;font-style:italic;font-size:1rem;line-height:1.2;color:var(--azul-esc)}
+  .vol{align-self:flex-start;background:var(--verde);color:#fff;font-weight:800;font-style:italic;font-size:.82rem;padding:2px 10px;border-radius:999px}
+  .pedir{margin-top:auto;text-align:center;text-decoration:none;color:#fff;font-weight:800;font-style:italic;font-size:.9rem;padding:10px;border-radius:999px;background:linear-gradient(135deg,var(--verde-claro),var(--verde-esc));transition:filter .15s}
+  .pedir:hover{filter:brightness(1.07)}
+  @media(max-width:360px){.pedir{font-size:.8rem;padding:9px 4px}.nome{font-size:.92rem}}
+  .rodape{text-align:center;color:var(--suave);font-size:.8rem;margin-top:34px;padding:0 16px}
+
+  /* visualizador do rótulo completo */
+  dialog{border:0;padding:0;background:transparent;max-width:100vw;max-height:100vh;width:100%;height:100%}
+  dialog::backdrop{background:rgba(10,30,55,.85)}
+  .lb{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px}
+  .lb img{max-width:100%;max-height:calc(100% - 56px);object-fit:contain;border-radius:10px;background:#fff}
+  .lb button{border:0;border-radius:999px;padding:9px 22px;font:800 italic .95rem "Open Sans",sans-serif;color:#fff;background:linear-gradient(135deg,var(--azul),var(--azul-esc));cursor:pointer}
+</style>
+</head>
+<body>
+<header class="topo">
+  <a class="voltar" href="index.html">← Voltar</a>
+  <img src="logo-recortado.webp" alt="MAXLIMPO">
+  <h1>Catálogo de Produtos Fabricados por Nós</h1>
+  <p class="sub">Toque na embalagem para ver o rótulo completo</p>
+</header>
+
+<div class="filtros"><div id="filtros" role="tablist" aria-label="Categorias"></div></div>
+<main id="catalogo"></main>
+<p class="rodape">Imagens ilustrativas. Consulte disponibilidade e condições com nosso time comercial.</p>
+
+<dialog id="lb"><div class="lb"><img id="lbImg" alt=""><button id="lbFechar" type="button">Fechar</button></div></dialog>
+
+<script>
+  // ===================== EDITE AQUI =====================
+  const WHATSAPP = "556539010277";
+  const MOSTRAR_PEDIDO = false;     // true mostra o botão "Pedir no WhatsApp" em cada produto
+  const IMG = "assets/produtos/";   // pasta com as imagens geradas
+
+  // img: prefixo do arquivo em assets/produtos (gera -frente.webp e -rotulo.webp)
+  const CATEGORIAS = [
+    {nome:"Água Sanitária", itens:[
+      {nome:"Água Sanitária", vol:"1 L", img:"agua-sanitaria_agua-sanitaria-1lt"},
+      {nome:"Água Sanitária", vol:"5 L", img:"agua-sanitaria_agua-sanitaria-5lt"}]},
+    {nome:"Amaciante", itens:[
+      {nome:"Amaciante Floral", vol:"2 L", img:"amaciante_amaciante-floral-2lt"},
+      {nome:"Amaciante Floral", vol:"5 L", img:"amaciante_amaciante-floral-5lt"},
+      {nome:"Amaciante Talco",  vol:"2 L", img:"amaciante_amaciante-talco-2lt"},
+      {nome:"Amaciante Talco",  vol:"5 L", img:"amaciante_amaciante-talco-5lt"}]},
+    {nome:"Detergente", itens:[
+      {nome:"Detergente Maçã",   vol:"500 ml", img:"detergente_detergente-maca"},
+      {nome:"Detergente Maçã",   vol:"2 L",    img:"detergente_detergente-maca-2-lt"},
+      {nome:"Detergente Neutro", vol:"500 ml", img:"detergente_detergente-neutro"},
+      {nome:"Detergente Neutro", vol:"2 L",    img:"detergente_detergente-neutro-2lt"}]},
+    {nome:"Lava Roupas", itens:[
+      {nome:"Sabão Líquido Floral", vol:"1 L", img:"lava-roupa_sabao-floral-1l-r"},
+      {nome:"Sabão Líquido Floral", vol:"5 L", img:"lava-roupa_sabao-floral-5l-r"}]},
+    {nome:"Limpador Perfumado", itens:[
+      {nome:"Limpador Bamboo",  vol:"1 L", img:"limpador-perfumado_limpador-bamboo"},
+      {nome:"Limpador Lavanda", vol:"1 L", img:"limpador-perfumado_limpador-lavanda"}]},
+    {nome:"Multiuso", itens:[
+      {nome:"Multiuso Bamboo", vol:"500 ml", img:"multiuso_bamboo"},
+      {nome:"Multiuso Cítrico", vol:"500 ml", img:"multiuso_citrico"}]},
+    {nome:"Shampoo Automotivo", itens:[
+      {nome:"Shampoo Automotivo Desincrustante", vol:"20 L", img:"shampo-automotivo_acido-20-l"},
+      {nome:"Shampoo Automotivo Neutro",         vol:"20 L", img:"shampo-automotivo_neutro"}]}
+  ];
+  // =======================================================
+
+  const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-");
+  const zap = p => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá! Vim pelo catálogo da MAXLIMPO e tenho interesse em: ${p.nome} (${p.vol}).`)}`;
+
+  document.getElementById("catalogo").innerHTML = CATEGORIAS.map(c => `
+    <section id="${slug(c.nome)}">
+      <h2>${c.nome}</h2>
+      <div class="grade">${c.itens.map(p => `
+        <article class="card">
+          <button class="foto" type="button" data-full="${IMG}${p.img}-rotulo.webp" data-alt="Rótulo ${p.nome} ${p.vol}" aria-label="Ver rótulo completo: ${p.nome} ${p.vol}">
+            <img src="${IMG}${p.img}-frente.webp" alt="${p.nome} ${p.vol}" loading="lazy">
+          </button>
+          <div class="info">
+            <h3 class="nome">${p.nome}</h3>
+            <span class="vol">${p.vol}</span>
+            ${MOSTRAR_PEDIDO ? `<a class="pedir" href="${zap(p)}" target="_blank" rel="noopener">Pedir no WhatsApp</a>` : ""}
+          </div>
+        </article>`).join("")}
+      </div>
+    </section>`).join("");
+
+  const filtros = document.getElementById("filtros");
+  filtros.innerHTML = `<button class="chip ativo" data-alvo="">Todos</button>` +
+    CATEGORIAS.map(c => `<button class="chip" data-alvo="${slug(c.nome)}">${c.nome}</button>`).join("");
+  filtros.addEventListener("click", e => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    filtros.querySelectorAll(".chip").forEach(x => x.classList.toggle("ativo", x === b));
+    const alvo = b.dataset.alvo;
+    document.querySelectorAll("main section").forEach(s => s.style.display = (!alvo || s.id === alvo) ? "" : "none");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+
+  const lb = document.getElementById("lb"), lbImg = document.getElementById("lbImg");
+  document.getElementById("catalogo").addEventListener("click", e => {
+    const f = e.target.closest(".foto"); if (!f) return;
+    lbImg.src = f.dataset.full; lbImg.alt = f.dataset.alt; lb.showModal();
+  });
+  document.getElementById("lbFechar").onclick = () => lb.close();
+  lb.addEventListener("click", e => { if (e.target === lb || e.target.classList.contains("lb")) lb.close(); });
+</script>
+</body>
+</html>
