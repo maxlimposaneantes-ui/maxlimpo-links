@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal da Loja | MAXLIMPO</title>
+<meta name="description" content="O Portal da Loja MAXLIMPO está em construção.">
+<link rel="icon" href="logo-recortado.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --verde:#7ab33a; --verde-esc:#5a9628; --verde-claro:#a4cf5e;
+    --azul:#1a78d0; --azul-esc:#1c5fb5; --azul-claro:#8fd3f0;
+    --txt:#23405c; --suave:#5f7388;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{
+    font-family:"Open Sans","Segoe UI",system-ui,sans-serif;color:var(--txt);min-height:100vh;
+    background:
+      radial-gradient(900px 380px at 100% -10%, rgba(143,211,240,.45), transparent 70%),
+      radial-gradient(800px 360px at -10% 0%, rgba(164,207,94,.35), transparent 70%),#fff;
+    display:flex;align-items:center;justify-content:center;padding:32px 16px;
+  }
+  .wrap{width:100%;max-width:480px;text-align:center}
+  .logo{width:min(300px,78%);height:auto;display:block;margin:0 auto 8px}
+  .cartao{background:#fff;border:2px solid var(--azul-claro);border-radius:24px;padding:28px 22px;box-shadow:0 6px 18px rgba(28,95,181,.12)}
+  .ico{width:64px;height:64px;margin:0 auto 12px;display:block;fill:var(--verde)}
+  h1{text-wrap:balance;font-style:italic;font-weight:800;font-size:1.6rem;color:var(--azul-esc)}
+  h1 span{color:var(--verde-esc)}
+  p{margin-top:12px;line-height:1.5;color:var(--suave)}
+  .barra{height:8px;border-radius:8px;background:#e6f1f9;margin:20px auto 0;max-width:260px;overflow:hidden}
+  .barra i{display:block;height:100%;width:65%;border-radius:8px;background:linear-gradient(90deg,var(--verde-claro),var(--azul))}
+  .acoes{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+  .btn{display:block;text-decoration:none;font-weight:800;font-style:italic;font-size:1.02rem;padding:14px 20px;border-radius:999px;transition:transform .15s,filter .15s}
+  .btn:hover,.btn:focus-visible{transform:translateY(-3px);filter:brightness(1.05);outline:none}
+  .verde{color:#fff;background:linear-gradient(135deg,var(--verde-claro),var(--verde-esc));box-shadow:0 4px 12px rgba(28,95,181,.18)}
+  .claro{color:var(--azul-esc);background:#fff;border:2px solid var(--azul-claro)}
+  @media(prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <img class="logo" src="logo-recortado.webp" alt="MAXLIMPO">
+  <section class="cartao">
+    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.400-7.400-1.300L9 6 6 9 1.600 4.700C.4 7.100.9 10.100 2.900 12.100c1.900 1.900 4.600 2.400 6.900 1.500l9.100 9.100c.4.400 1 .4 1.400 0l2.300-2.300c.5-.4.5-1.100.1-1.400z"/></svg>
+    <h1>Portal da Loja <span>em construção</span></h1>
+    <p>Estamos preparando um espaço novo para você comprar com mais facilidade. Em breve ele estará no ar.</p>
+    <div class="barra" role="img" aria-label="Portal em construção"><i></i></div>
+    <div class="acoes">
+      <a class="btn verde" href="catalogo.html">Ver nossos produtos</a>
+      <a class="btn claro" href="index.html">← Voltar</a>
+    </div>
+  </section>
+</main>
+</body>
+</html>
