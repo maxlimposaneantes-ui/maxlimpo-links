@@ -41,9 +41,8 @@
   section{margin-top:26px;scroll-margin-top:70px}
   section h2{font-style:italic;font-weight:800;font-size:1.25rem;color:var(--verde-esc);display:flex;align-items:center;gap:10px;margin-bottom:12px}
   section h2::after{content:"";flex:1;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--verde-claro),var(--azul-claro),transparent)}
-  .grade{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-  @media(min-width:640px){.grade{grid-template-columns:repeat(3,1fr);gap:18px}}
-  @media(min-width:900px){.grade{grid-template-columns:repeat(4,1fr)}}
+  .grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+  @media(min-width:640px){.grade{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}}
 
   .card{min-width:0;background:#fff;border:1px solid var(--borda);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 3px 10px rgba(28,95,181,.1);transition:transform .15s,box-shadow .15s}
   .card:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(28,95,181,.2)}
@@ -56,6 +55,23 @@
   .pedir{margin-top:auto;text-align:center;text-decoration:none;color:#fff;font-weight:800;font-style:italic;font-size:.9rem;padding:10px;border-radius:999px;background:linear-gradient(135deg,var(--verde-claro),var(--verde-esc));transition:filter .15s}
   .pedir:hover{filter:brightness(1.07)}
   @media(max-width:360px){.pedir{font-size:.8rem;padding:9px 4px}.nome{font-size:.92rem}}
+  .desc{color:var(--suave);font-size:.9rem;margin:-4px 0 12px}
+  .precos{display:grid;gap:2px;margin-top:2px}
+  .linha{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px dashed var(--borda);font-size:.88rem}
+  .linha span{font-weight:600}
+  .linha b{color:var(--azul-esc);font-style:italic;font-weight:800;white-space:nowrap}
+  .linha small{display:block;font-size:.68rem;font-weight:400;color:var(--suave)}
+  .linha.granel{border:0;margin-top:6px;padding:6px 8px;border-radius:10px;background:#eef7e2;color:var(--verde-esc)}
+  .linha.granel b{color:var(--verde-esc)}
+  .revenda{display:grid;grid-template-columns:1fr;gap:14px}
+  @media(min-width:640px){.revenda{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:900px){.revenda{grid-template-columns:repeat(3,1fr)}}
+  .rcard{min-width:0;background:#fff;border:1px solid var(--borda);border-radius:18px;padding:14px 16px;box-shadow:0 3px 10px rgba(28,95,181,.1)}
+  .rcard h3{font-style:italic;font-weight:800;font-size:1.02rem;color:var(--azul-esc)}
+  .rcard .marcas{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .rcard .marcas span{background:var(--azul-claro);color:var(--azul-esc);font-weight:800;font-size:.72rem;padding:2px 9px;border-radius:999px}
+  .rcard ul{padding-left:18px;font-size:.88rem;line-height:1.5}
+  .aviso{background:#fff;border:2px dashed var(--verde);border-radius:16px;padding:12px 16px;font-size:.9rem;margin-bottom:14px}
   .rodape{text-align:center;color:var(--suave);font-size:.8rem;margin-top:34px;padding:0 16px}
 
   /* visualizador do rótulo completo */
@@ -71,74 +87,112 @@
   <a class="voltar" href="index.html">← Voltar</a>
   <img src="logo-recortado.webp" alt="MAXLIMPO">
   <h1>Catálogo de Produtos Fabricados por Nós</h1>
-  <p class="sub">Toque na embalagem para ver o rótulo completo</p>
+  <p class="sub">Preços de novembro/2026. Toque na embalagem para ver o rótulo completo</p>
 </header>
 
 <div class="filtros"><div id="filtros" role="tablist" aria-label="Categorias"></div></div>
 <main id="catalogo"></main>
-<p class="rodape">Imagens ilustrativas. Consulte disponibilidade e condições com nosso time comercial.</p>
+<p class="rodape">Imagens ilustrativas. Preços de novembro/2026, sujeitos a alteração sem aviso prévio. Valores em reais (R$) por embalagem; a venda a granel é por litro. Venda a granel: traga seu frasco limpo, com tampa e em perfeitas condições.</p>
 
 <dialog id="lb"><div class="lb"><img id="lbImg" alt=""><button id="lbFechar" type="button">Fechar</button></div></dialog>
 
 <script>
   // ===================== EDITE AQUI =====================
-  const WHATSAPP = "556539010277";
+  const WHATSAPP = "556531900277";
   const MOSTRAR_PEDIDO = false;     // true mostra o botão "Pedir no WhatsApp" em cada produto
   const IMG = "assets/produtos/";   // pasta com as imagens geradas
 
+  // Preços de novembro/2026 (Apresentação Comercial V3). v = volume, p = preço, c = código
+  const AGUA  = {precos:[{v:"1 L",p:"4,50",c:"00503"},{v:"5 L",p:"15,00",c:"00498"}], granel:{p:"2,00",c:"00500"}};
+  const AMAC  = {precos:[{v:"2 L",p:"12,90",c:"00444"},{v:"5 L",p:"29,90",c:"00445"}], granel:{p:"4,90",c:"00443"}};
+  const DET   = {precos:[{v:"500 mL",p:"2,60",c:"00485"},{v:"2 L",p:"10,90",c:"00629"},{v:"5 L",p:"25,90",c:"00484"}], granel:{p:"3,50",c:"00482"}};
+  const SABAO = {precos:[{v:"2 L",p:"17,90",c:"00447"},{v:"5 L",p:"39,90",c:"00448"}], granel:{p:"6,50",c:"00446"}};
+  const LIMP  = {precos:[{v:"1 L",p:"7,20",c:"00504"},{v:"5 L",p:"29,90",c:"00501"}], granel:{p:"3,90",c:"00506"}};
+  const MULTI = {precos:[{v:"500 mL",p:"5,90",c:"00507"},{v:"2 L",p:"14,90",c:"00630"},{v:"5 L",p:"31,90",c:"00502"}], granel:{p:"5,20",c:"00508"}};
+  const SH_D  = {precos:[{v:"20 L",p:"280,00",c:"00343"}], granel:{p:"11,50",c:"00344"}};
+  const SH_N  = {precos:[{v:"20 L",p:"230,00",c:"00347"}], granel:{p:"10,00",c:"00345"}};
+
   // img: prefixo do arquivo em assets/produtos (gera -frente.webp e -rotulo.webp)
   const CATEGORIAS = [
-    {nome:"Água Sanitária", itens:[
-      {nome:"Água Sanitária", vol:"1 L", img:"agua-sanitaria_agua-sanitaria-1lt"},
-      {nome:"Água Sanitária", vol:"5 L", img:"agua-sanitaria_agua-sanitaria-5lt"}]},
-    {nome:"Amaciante", itens:[
-      {nome:"Amaciante Floral", vol:"2 L", img:"amaciante_amaciante-floral-2lt"},
-      {nome:"Amaciante Floral", vol:"5 L", img:"amaciante_amaciante-floral-5lt"},
-      {nome:"Amaciante Talco",  vol:"2 L", img:"amaciante_amaciante-talco-2lt"},
-      {nome:"Amaciante Talco",  vol:"5 L", img:"amaciante_amaciante-talco-5lt"}]},
-    {nome:"Detergente", itens:[
-      {nome:"Detergente Maçã",   vol:"500 ml", img:"detergente_detergente-maca"},
-      {nome:"Detergente Maçã",   vol:"2 L",    img:"detergente_detergente-maca-2-lt"},
-      {nome:"Detergente Neutro", vol:"500 ml", img:"detergente_detergente-neutro"},
-      {nome:"Detergente Neutro", vol:"2 L",    img:"detergente_detergente-neutro-2lt"}]},
-    {nome:"Lava Roupas", itens:[
-      {nome:"Sabão Líquido Floral", vol:"1 L", img:"lava-roupa_sabao-floral-1l-r"},
-      {nome:"Sabão Líquido Floral", vol:"5 L", img:"lava-roupa_sabao-floral-5l-r"}]},
-    {nome:"Limpador Perfumado", itens:[
-      {nome:"Limpador Bamboo",  vol:"1 L", img:"limpador-perfumado_limpador-bamboo"},
-      {nome:"Limpador Lavanda", vol:"1 L", img:"limpador-perfumado_limpador-lavanda"}]},
-    {nome:"Multiuso", itens:[
-      {nome:"Multiuso Bamboo", vol:"500 ml", img:"multiuso_bamboo"},
-      {nome:"Multiuso Cítrico", vol:"500 ml", img:"multiuso_citrico"}]},
-    {nome:"Shampoo Automotivo", itens:[
-      {nome:"Shampoo Automotivo Desincrustante", vol:"20 L", img:"shampo-automotivo_acido-20-l"},
-      {nome:"Shampoo Automotivo Neutro",         vol:"20 L", img:"shampo-automotivo_neutro"}]}
+    {nome:"Água Sanitária", desc:"Alvejante e desinfetante, com 2,0 a 2,5% de cloro ativo.", itens:[
+      {nome:"Água Sanitária", img:"agua-sanitaria_agua-sanitaria-1lt", ...AGUA}]},
+    {nome:"Amaciante", desc:"Roupas mais macias, perfumadas e confortáveis.", itens:[
+      {nome:"Amaciante Floral", img:"amaciante_amaciante-floral-2lt", ...AMAC},
+      {nome:"Amaciante Talco",  img:"amaciante_amaciante-talco-2lt",  ...AMAC}]},
+    {nome:"Detergente", desc:"Alta espuma e poder desengordurante.", itens:[
+      {nome:"Detergente Maçã", img:"detergente_detergente-maca-2-lt", ...DET}]},
+    {nome:"Lava Roupas", desc:"Sabão líquido que cuida das fibras e das cores. Perfume de longa duração.", itens:[
+      {nome:"Sabão Líquido Floral", img:"lava-roupa_sabao-floral-5l-r", ...SABAO}]},
+    {nome:"Limpador Perfumado", desc:"Limpeza diária com perfume de longa duração. Uso geral.", itens:[
+      {nome:"Limpador Bamboo",  img:"limpador-perfumado_limpador-bamboo",  ...LIMP},
+      {nome:"Limpador Lavanda", img:"limpador-perfumado_limpador-lavanda", ...LIMP}]},
+    {nome:"Multiuso", desc:"Limpeza diária completa. Limpa, perfuma e dá brilho. Pronto para uso, sem diluir.", itens:[
+      {nome:"Multiuso Bamboo",  img:"multiuso_bamboo",  ...MULTI},
+      {nome:"Multiuso Cítrico", img:"multiuso_citrico", ...MULTI}]},
+    {nome:"Shampoo Automotivo", desc:"Limpeza profunda, brilho e proteção. Diluição sugerida 1/100: rende muito.", itens:[
+      {nome:"Shampoo Automotivo Desincrustante", img:"shampo-automotivo_acido-20-l", ...SH_D},
+      {nome:"Shampoo Automotivo Neutro",         img:"shampo-automotivo_neutro",     ...SH_N}]}
+  ];
+
+  // Revenda de marcas parceiras (sem preço: o consultor informa na hora, com a disponibilidade)
+  const REVENDA = [
+    {t:"Alvejantes e lavanderia", m:["Barbarex","Duratto","Deoline"], i:["Alvejante sem cloro (2 L, 5 L e pouch 800 mL)","Percarbonato de sódio (pó e líquido)","Sabão em pó (400 g, 800 g e 5 kg)","Água de passar e protetor de tecidos"]},
+    {t:"Limpeza pesada e pós-obra", m:["Duratto","Barbarex"], i:["Limpa ferrugem e removedor de cimento","Limpador pós-obra e limpa rejuntes","Limpa pedras e tira limo","Super fortão e extra forte para pisos"]},
+    {t:"Pisos, ceras e brilho", m:["Barbarex","Duratto"], i:["Selador para porcelanato, granito e mármore","Cera líquida incolor e Super Black","Cera antiderrapante (alto brilho e acetinada)","Pasta brilho e lustra móveis","Limpa pisos e bancadas citronela","Querosene perfumado"]},
+    {t:"Cozinha e superfícies", m:["Deoline","Barbarex"], i:["Limpa inox, alumínio e chapa/grill","Desengraxante e removedor de sujeiras pesadas","Limpa vidros e limpa box","Limpa cola"]},
+    {t:"Desinfecção e álcool", m:["Duratto","Barbarex"], i:["Álcool bactericida 1 L","Álcool bicarbonato e álcool gel 70% aloe vera","Cloro gel desinfetante","Limpador de álcool chá branco","Linha Animali (uso direto e limpador de pisos)"]},
+    {t:"Higiene e saboneteiras", m:["Premisse","Velox","Invoq"], i:["Sabonete líquido: erva-doce, pêssego e damasco, glicerinado neutro e morango e champagne","Sabonete espuma e spray","Álcool gel antisséptico (80 mL a 5 L)","Dispensers de sabonete e papel toalha"]},
+    {t:"Papéis para banheiro", m:["Penipel","Velox"], i:["Papel higiênico rolão 300 m e 200 m","Papel toalha bobina 150 m e 200 m","Interfolhado soft, plus e preto/azul","Dispenser de papel higiênico rolão"]},
+    {t:"Aromas e ambientes", m:["Premisse","Deoline"], i:["Aromatizantes de ambiente Air Soft e Air Clean (300 mL)","Difusores de aromas chá branco (350 mL e 1 L)","Gotas perfumadas e neutralizador de odores","Telas aromatizantes","Aromatizantes automotivos (40 mL)"]},
+    {t:"Utensílios de limpeza", m:["Fiory","Cor & Lar","Shangrilla","Powermaid"], i:["Vassouras, rodos e espanadores","Mops giratório, flat e spray, com refis","Panos de chão, multiuso e Duo Max","Escovas sanitárias, desentupidores e pás","Esponja mágica, rolo adesivo e mini varal"]},
+    {t:"Sacos de lixo, lixeiras e baldes", m:["Cor & Lar","Premisse","Powermaid"], i:["Sacos de lixo pretos e azuis (30 L a 100 L)","Lixeiras com pedal, redondas e matte","Baldes de 7 L e 15 L","Lixeiras para copo descartável"]}
   ];
   // =======================================================
 
-  const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-");
-  const zap = p => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá! Vim pelo catálogo da MAXLIMPO e tenho interesse em: ${p.nome} (${p.vol}).`)}`;
+  const slug = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-");
+  const zap = p => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá! Vim pelo catálogo da MAXLIMPO e tenho interesse em: ${p.nome}.`)}`;
+  const R = n => `R$ ${n}`;
 
-  document.getElementById("catalogo").innerHTML = CATEGORIAS.map(c => `
+  const secoesProprias = CATEGORIAS.map(c => `
     <section id="${slug(c.nome)}">
       <h2>${c.nome}</h2>
+      <p class="desc">${c.desc}</p>
       <div class="grade">${c.itens.map(p => `
         <article class="card">
-          <button class="foto" type="button" data-full="${IMG}${p.img}-rotulo.webp" data-alt="Rótulo ${p.nome} ${p.vol}" aria-label="Ver rótulo completo: ${p.nome} ${p.vol}">
-            <img src="${IMG}${p.img}-frente.webp" alt="${p.nome} ${p.vol}" loading="lazy">
+          <button class="foto" type="button" data-full="${IMG}${p.img}-rotulo.webp" data-alt="Rótulo ${p.nome}" aria-label="Ver rótulo completo: ${p.nome}">
+            <img src="${IMG}${p.img}-frente.webp" alt="${p.nome}" loading="lazy">
           </button>
           <div class="info">
             <h3 class="nome">${p.nome}</h3>
-            <span class="vol">${p.vol}</span>
+            <div class="precos">
+              ${p.precos.map(x => `<div class="linha"><span>${x.v}<small>cód. ${x.c}</small></span><b>${R(x.p)}</b></div>`).join("")}
+              <div class="linha granel"><span>A granel, por litro<small>cód. ${p.granel.c}</small></span><b>${R(p.granel.p)}</b></div>
+            </div>
             ${MOSTRAR_PEDIDO ? `<a class="pedir" href="${zap(p)}" target="_blank" rel="noopener">Pedir no WhatsApp</a>` : ""}
           </div>
         </article>`).join("")}
       </div>
     </section>`).join("");
 
+  const secaoRevenda = `
+    <section id="revenda">
+      <h2>Revenda de marcas parceiras</h2>
+      <p class="aviso">Além da nossa linha, revendemos mais de 100 itens de marcas parceiras. Os preços e a disponibilidade são informados na hora pelo nosso time comercial. Se o item não estiver na lista, pergunte: podemos consultar.</p>
+      <div class="revenda">${REVENDA.map(g => `
+        <article class="rcard">
+          <h3>${g.t}</h3>
+          <div class="marcas">${g.m.map(m => `<span>${m}</span>`).join("")}</div>
+          <ul>${g.i.map(i => `<li>${i}</li>`).join("")}</ul>
+        </article>`).join("")}
+      </div>
+    </section>`;
+
+  document.getElementById("catalogo").innerHTML = secoesProprias + secaoRevenda;
+
   const filtros = document.getElementById("filtros");
   filtros.innerHTML = `<button class="chip ativo" data-alvo="">Todos</button>` +
-    CATEGORIAS.map(c => `<button class="chip" data-alvo="${slug(c.nome)}">${c.nome}</button>`).join("");
+    CATEGORIAS.map(c => `<button class="chip" data-alvo="${slug(c.nome)}">${c.nome}</button>`).join("") +
+    `<button class="chip" data-alvo="revenda">Revenda de marcas</button>`;
   filtros.addEventListener("click", e => {
     const b = e.target.closest(".chip"); if (!b) return;
     filtros.querySelectorAll(".chip").forEach(x => x.classList.toggle("ativo", x === b));
